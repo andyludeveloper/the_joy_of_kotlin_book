@@ -2,11 +2,18 @@ package com.andyludeveloper.the_joy_of_kotlin.ch6
 
 sealed class Option<out A> {
     abstract fun isEmpty(): Boolean
-    fun getOrElse(default: @UnsafeVariance A): A = when (this) {
-        is None -> default
+
+    //Exercise 6-1
+//    fun getOrElse(default: @UnsafeVariance A): A = when (this) {
+//        is None -> default
+//        is Some -> value
+//    }
+
+    //Exercise 6-2
+    fun getOrElse(default:()-> @UnsafeVariance A): A = when (this) {
+        is None -> default()
         is Some -> value
     }
-
     internal object None : Option<Nothing>() {
 
         override fun isEmpty(): Boolean = true
@@ -31,11 +38,20 @@ sealed class Option<out A> {
     }
 }
 
+//Exercise 6-1
+//fun main() {
+//    val max1 = max(listOf(4, 3, 2, 8)).getOrElse(1)
+//    println(max1)
+//    val max2 = max(listOf()).getOrElse(0)
+//    println(max2)
+//}
 
+//Exercise 6-2
+fun getDefault() : Int = throw RuntimeException()
 fun main() {
-    val max1 = max(listOf(4, 3, 2, 8)).getOrElse(1)
+    val max1 = max(listOf(4, 3, 2, 8)).getOrElse(::getDefault)
     println(max1)
-    val max2 = max(listOf()).getOrElse(0)
+    val max2 = max(listOf()).getOrElse(::getDefault)
     println(max2)
 }
 
