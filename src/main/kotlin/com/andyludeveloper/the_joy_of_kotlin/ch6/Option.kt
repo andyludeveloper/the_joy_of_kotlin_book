@@ -2,7 +2,7 @@ package com.andyludeveloper.the_joy_of_kotlin.ch6
 
 sealed class Option<out A> {
     abstract fun isEmpty(): Boolean
-
+    abstract fun <B> map(f: (A) -> B): Option<B>
     //Exercise 6-1
 //    fun getOrElse(default: @UnsafeVariance A): A = when (this) {
 //        is None -> default
@@ -10,13 +10,15 @@ sealed class Option<out A> {
 //    }
 
     //Exercise 6-2
-    fun getOrElse(default:()-> @UnsafeVariance A): A = when (this) {
+    fun getOrElse(default: () -> @UnsafeVariance A): A = when (this) {
         is None -> default()
         is Some -> value
     }
+
     internal object None : Option<Nothing>() {
 
         override fun isEmpty(): Boolean = true
+        override fun <B> map(f: (Nothing) -> B): Option<B> = None
 
         override fun equals(other: Any?): Boolean = other == None
 
@@ -28,6 +30,7 @@ sealed class Option<out A> {
     internal data class Some<out A>(internal val value: A) : Option<A>() {
 
         override fun isEmpty(): Boolean = false
+        override fun <B> map(f: (A) -> B): Option<B> = Some(f(value))
     }
 
     companion object {
@@ -47,7 +50,7 @@ sealed class Option<out A> {
 //}
 
 //Exercise 6-2
-fun getDefault() : Int = throw RuntimeException()
+fun getDefault(): Int = throw RuntimeException()
 fun main() {
     val max1 = max(listOf(4, 3, 2, 8)).getOrElse(::getDefault)
     println(max1)
