@@ -34,6 +34,8 @@ val mean: (List<Double>) -> Option<Double> = { list ->
     }
 }
 
+fun <A, B> lift(f: (A) -> B): (Option<A>) -> Option<B> = { it.map(f) }
+
 fun main() {
     val toons: Map<String, Toon> = mapOf(
         "Mickey" to Toon("Mickey", "Mouse", "mickey@disney.com"),
