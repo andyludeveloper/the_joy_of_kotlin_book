@@ -26,7 +26,16 @@ fun main() {
     val mickey = toons.getOption("Mickey").flatMap { it.email }
     val minnie = toons.getOption("Minnie").flatMap { it.email }
     val goofy = toons.getOption("Goofy").flatMap { it.email }
+
     println(mickey.getOrElse { " No Data" })
     println(minnie.getOrElse { " No Data" })
     println(goofy.getOrElse { " No Data" })
+
+    val mickey2 = toons["Mickey"]?.email ?: "No Data"
+    val minnie2 = toons["Minnie"]?.email ?: "No Data"
+    val goofy2 = toons["Goofy"]?.email ?: "No Data"
+
+    println(mickey2)
+    println(minnie2)
+    println(goofy2)
 }
