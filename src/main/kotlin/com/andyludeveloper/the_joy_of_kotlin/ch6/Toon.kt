@@ -52,6 +52,10 @@ fun <A, B> hLift(f: (A) -> B): (A) -> Option<B> = {
 
 fun <A, B, C> map2(oa: Option<A>, ob: Option<B>, f: (A) -> (B) -> C): Option<C> =
     oa.flatMap { a -> ob.map { b -> f(a)(b) } }
+
+fun <A, B, C, D> map3(oa: Option<A>, ob: Option<B>, oc: Option<C>, f: (A) -> (B) -> (C) -> D): Option<D> =
+    oa.flatMap { a -> ob.flatMap { b -> oc.map { c -> f(a)(b)(c) } } }
+
 fun main() {
     val toons: Map<String, Toon> = mapOf(
         "Mickey" to Toon("Mickey", "Mouse", "mickey@disney.com"),
