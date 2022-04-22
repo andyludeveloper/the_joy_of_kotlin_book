@@ -45,10 +45,13 @@ fun <A, B> lift(f: (A) -> B): (Option<A>) -> Option<B> = {
 fun <A, B> hLift(f: (A) -> B): (A) -> Option<B> = {
     try {
         Option(it).map(f)
-    }catch (e:Exception){
+    } catch (e: Exception) {
         Option()
     }
 }
+
+fun <A, B, C> map2(oa: Option<A>, ob: Option<B>, f: (A) -> (B) -> C): Option<C> =
+    oa.flatMap { a -> ob.map { b -> f(a)(b) } }
 fun main() {
     val toons: Map<String, Toon> = mapOf(
         "Mickey" to Toon("Mickey", "Mouse", "mickey@disney.com"),
