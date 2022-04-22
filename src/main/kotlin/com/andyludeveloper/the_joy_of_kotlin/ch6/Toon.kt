@@ -1,5 +1,7 @@
 package com.andyludeveloper.the_joy_of_kotlin.ch6
 
+import kotlin.math.*
+
 data class Toon(
     val firstName: String,
     val lastName: String,
@@ -16,6 +18,21 @@ data class Toon(
 }
 
 fun <K, V> Map<K, V>.getOption(key: K) = Option(this[key])
+
+val variance: (List<Double>) -> Option<Double> = { list ->
+    mean(list).flatMap { m ->
+        mean(list.map { x ->
+            (x - m).pow(2.0)
+        })
+    }
+}
+
+val mean: (List<Double>) -> Option<Double> = { list ->
+    when {
+        list.isEmpty() -> Option()
+        else -> Option(list.sum() / list.size)
+    }
+}
 
 fun main() {
     val toons: Map<String, Toon> = mapOf(
