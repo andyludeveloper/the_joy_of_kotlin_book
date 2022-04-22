@@ -34,8 +34,21 @@ val mean: (List<Double>) -> Option<Double> = { list ->
     }
 }
 
-fun <A, B> lift(f: (A) -> B): (Option<A>) -> Option<B> = { it.map(f) }
+fun <A, B> lift(f: (A) -> B): (Option<A>) -> Option<B> = {
+    try {
+        it.map(f)
+    } catch (exception: Exception) {
+        Option()
+    }
+}
 
+fun <A, B> hLift(f: (A) -> B): (A) -> Option<B> = {
+    try {
+        Option(it).map(f)
+    }catch (e:Exception){
+        Option()
+    }
+}
 fun main() {
     val toons: Map<String, Toon> = mapOf(
         "Mickey" to Toon("Mickey", "Mouse", "mickey@disney.com"),
