@@ -14,6 +14,8 @@ sealed class Option<out A> {
     fun orElse(default: () -> Option<@UnsafeVariance A>): Option<A> =
         map { this }.getOrElse(default)
 
+    fun filter(p: (A) -> Boolean): Option<A> = flatMap { x ->if(p(x)) this else None }
+
     //Exercise 6-2
     fun getOrElse(default: () -> @UnsafeVariance A): A = when (this) {
         is None -> default()
